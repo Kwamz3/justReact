@@ -1,13 +1,29 @@
 import './App.css'
 
+// // when importing with the default export
+// import MovieCard from './components/movieCard'
+
+// else if it is a named exported 
+import MovieCard from './components/movieCard'
+
+
 function App() {
   return (
     <>
-     <Text display={'Hello'}/>
-     <Text display={`What's up?`}/>
+
     </>
   );
 }
+
+// // writing the props directly into the function
+// function App() {
+//   return (
+//     <>
+//      <Text display={'Hello'}/>
+//      <Text display={`What's up?`}/>
+//     </>
+//   );
+// }
 
 // function Text() {
 //   return (
@@ -17,13 +33,18 @@ function App() {
 //   );
 // }
 
-// the use of props in a function can give it unique features
-function Text({display}) {
-  return (
-    <div>
-        <p>{display}</p>
-    </div>
-  );
-}
+// // the use of props in a function can give it unique features
+// function Text({display}) {
+//   return (
+//     <div>
+//         <p>{display}</p>
+//     </div>
+//   );
+// }
+
+// export default App
+
+
+
 
 export default App
