@@ -1,16 +1,16 @@
 import './App.css'
 
 // // when importing with the default export
-// import MovieCard from './components/movieCard'
+import MovieCard from './components/movieCard'
 
 // else if it is a named exported 
-import MovieCard from './components/movieCard'
+// import {MovieCard} from './components/movieCard'
 
 
 function App() {
   return (
     <>
-
+      <MovieCard movie={{title:"Tim's film", release_date: "2024"}} />
     </>
   );
 }

@@ -1,11 +1,11 @@
-// for the  named export function method
+// For the exported default method
 
-export function MovieCard({ movie }) { 
+function MovieCard({ movie }) { 
     
     function onFavoriteClick() {
-        alert('clicked')
-    }
-
+            alert('clicked')
+        }
+    
     <div className="movie-card">
         <div className="movie-poster">
             <img src={movie.url} alt={movie.title} />
@@ -22,14 +22,15 @@ export function MovieCard({ movie }) {
     </div>
 };
 
-// this is the default export with this you can have the name
+// this is the default export with this you can have the name 
 // and the location of the component
+export default MovieCard
 
 
 
-// // For the exported default method
+// // for the  named export function method
 
-// function MovieCard({ movie }) { 
+// export function MovieCard({ movie }) { 
     
 //     function onFavoriteClick() {
 //         alert('clicked')
@@ -50,7 +51,3 @@ export function MovieCard({ movie }) {
 //         </div>
 //     </div>
 // };
-
-// // this is the default export with this you can have the name 
-// // and the location of the component
-// export default MovieCard
