@@ -11,6 +11,7 @@ function App() {
   return (
     <>
       <MovieCard movie={{title:"Tim's film", release_date: "2024"}} />
+      <MovieCard movie={{title:"John's film", release_date: "2020"}} />
     </>
   );
 }
