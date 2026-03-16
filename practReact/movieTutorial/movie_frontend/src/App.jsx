@@ -12,6 +12,7 @@ function App() {
     <>
       <MovieCard movie={{title:"Tim's film", release_date: "2024"}} />
       <MovieCard movie={{title:"John's film", release_date: "2020"}} />
+      <MovieCard movie={{title:"Mark's film", release_date: "2017"}} />
     </>
   );
 }
