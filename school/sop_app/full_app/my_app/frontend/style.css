@@ -1,0 +1,7 @@
+body{
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    background: hsl(34, 100%, 88%);
+}

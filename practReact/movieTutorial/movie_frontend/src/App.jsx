@@ -1,21 +1,28 @@
 import './App.css'
+import Home from './pages/Home'
+
+function App() { 
+  return (
+    <Home/>
+  )
+};
 
 // // when importing with the default export
-import MovieCard from './components/movieCard'
+// import MovieCard from './components/movieCard'
 
 // else if it is a named exported 
 // import {MovieCard} from './components/movieCard'
 
 
-function App() {
-  return (
-    <>
-      <MovieCard movie={{title:"Tim's film", release_date: "2024"}} />
-      <MovieCard movie={{title:"John's film", release_date: "2020"}} />
-      <MovieCard movie={{title:"Mark's film", release_date: "2017"}} />
-    </>
-  );
-}
+// function App() {
+//   return (
+//     <>
+//       <MovieCard movie={{title:"Tim's film", release_date: "2024"}} />
+//       <MovieCard movie={{title:"John's film", release_date: "2020"}} />
+//       <MovieCard movie={{title:"Mark's film", release_date: "2017"}} />
+//     </>
+//   );
+// }
 
 // // writing the props directly into the function
 // function App() {
@@ -45,8 +52,4 @@ function App() {
 // }
 
 // export default App
-
-
-
-
 export default App
