@@ -4,13 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Charles' POS system</title>
+    <title>Cashwell POS system</title>
 </head>
 <body>
     
+    <div id="product-section">
+        <h2>Products</h2>
+        <input type="text" id="barcode-input" placeholder="Scan barcoode or Type name...">
+        
+        <div id="product-list"></div>
+    </div>
 
+    <div id="cart-section">
+        <h2>Shopping Cart</h2>
+        <div id="cart-items"></div>
+        <div class="total-box">Total: <span id="cart-total">0.00</span></div>
 
+        <label>Payment Method:</label>
+        <select name="payment" id="payment-method">
+            <option value="cash">Cash</option>
+            <option value="mobile-money">Mobile money</option>
+            <option value="card">Credit/Debit card</option>
 
+            <button class="checkout-btn" onclick="processCheckout()">Confirm Sale</button>
+        </select>
+    </div>
 
     <script src="script.js"></script>
 </body>

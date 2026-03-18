@@ -5,3 +5,27 @@ body{
     margin: 0;
     background: hsl(34, 100%, 88%);
 }
+
+.product-setion{
+    flex: 2;
+    padding: 20px;
+    border-right: 2px solid #ddd;
+}
+
+
+
+#barcode-input{
+    width: 100px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#product-list{
+    display: grid;
+    grid-template-columns: (3, 1fr);
+}
+
+#payment-method{
+    padding: 10px;
+    margin-bottom: 20px;
+}
