@@ -5,7 +5,8 @@ import {
 } from "lucide-react";
 import { initialProducts, Product, CartItem } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
-import { CATEGORIES } from "../data/mockData";
+import { CATEGORIES, Customer } from "../data/mockData";
+import { usePaystackPayment } from "react-paystack";
 
 type PaymentMethod = "cash" | "mobile_money" | "card";
 
@@ -23,6 +24,8 @@ export function CheckoutPage() {
   const [globalDiscount, setGlobalDiscount] = useState(0);
   const [payMethod, setPayMethod] = useState<PaymentMethod>("cash");
   const [cashGiven, setCashGiven] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [transactionDone, setTransactionDone] = useState(false);
   const [voidConfirm, setVoidConfirm] = useState<string | null>(null);
   const barcodeRef = useRef<HTMLInputElement>(null);
@@ -90,8 +93,35 @@ export function CheckoutPage() {
   const cashGivenNum = parseFloat(cashGiven) || 0;
   const change = cashGivenNum - total;
 
-  const handlePay = () => {
+  const config = {
+    reference: (new Date()).getTime().toString(),
+    email: "customer@example.com",
+    amount: Math.round(total * 100), // Paystack expects amount in lowest denomination (e.g. kobo)
+    publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "", 
+    phone: phoneNumber,
+    currency: "GHS", // uncomment to enforce a currency, defaults to account currency
+  };
+
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = (reference: any) => {
     setTransactionDone(true);
+  };
+
+  const onClose = () => {
+    // optional: add logic for modal close without payment
+  };
+
+  const handlePay = () => {
+    if (payMethod === "cash") {
+      setTransactionDone(true);
+    } else {
+      if (!config.publicKey || config.publicKey === "pk_test_...") {
+        alert("Please set your Paystack valid test public key in the .env file before checking out.");
+        return;
+      }
+      initializePayment({ onSuccess, onClose });
+    }
   };
 
   const newTransaction = () => {
@@ -100,6 +130,7 @@ export function CheckoutPage() {
     setTransactionDone(false);
     setShowPayModal(false);
     setCashGiven("");
+    setPhoneNumber("");
     setPayMethod("cash");
   };
 
@@ -460,10 +491,23 @@ export function CheckoutPage() {
                     )}
                   </div>
                 )}
+                {payMethod === "mobile_money" && (
+                  <div className="mb-4">
+                    <label style={{ color: "#64748b", fontSize: "0.85rem", display: "block", marginBottom: "0.4rem" }}>Phone Number</label>
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      placeholder="e.g. +233 54 123 4567"
+                      className="w-full rounded-xl px-4 py-3 outline-none"
+                      style={{ background: "#f8fafc", border: "1px solid #e2e8f0", color: "#1e293b" }}
+                    />
+                  </div>
+                )}
 
                 <button
                   onClick={handlePay}
-                  disabled={payMethod === "cash" && cashGivenNum < total && cashGiven !== ""}
+                  disabled={(payMethod === "cash" && cashGivenNum < total && cashGiven !== "") || (payMethod === "mobile_money" && phoneNumber.length < 9)}
                   className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2"
                   style={{
                     background: "linear-gradient(135deg, #10b981, #059669)",
