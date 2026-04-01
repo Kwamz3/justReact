@@ -25,7 +25,6 @@ export function CheckoutPage() {
   const [payMethod, setPayMethod] = useState<PaymentMethod>("cash");
   const [cashGiven, setCashGiven] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
   const [transactionDone, setTransactionDone] = useState(false);
   const [voidConfirm, setVoidConfirm] = useState<string | null>(null);
   const barcodeRef = useRef<HTMLInputElement>(null);
