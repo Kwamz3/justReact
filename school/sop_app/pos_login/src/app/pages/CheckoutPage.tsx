@@ -98,7 +98,7 @@ export function CheckoutPage() {
     amount: Math.round(total * 100), // Paystack expects amount in lowest denomination (e.g. kobo)
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "", 
     phone: phoneNumber,
-    currency: "GHS", // uncomment to enforce a currency, defaults to account currency
+    currency: "GHS",
   };
 
   const initializePayment = usePaystackPayment(config);
