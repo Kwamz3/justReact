@@ -26,7 +26,7 @@ function AppContent() {
 
   // Role-based page guard
   const canAccess = (page: Page): boolean => {
-    if (page === "inventory" || page === "analytics") {
+    if (page === "analytics" || page === "customers") {
       return user.role === "admin" || user.role === "manager";
     }
     return true;

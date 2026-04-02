@@ -23,9 +23,9 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { id: "checkout", label: "Checkout", icon: <LayoutDashboard className="w-5 h-5" />, roles: ["admin", "manager", "cashier"] },
-  { id: "inventory", label: "Inventory", icon: <Package className="w-5 h-5" />, roles: ["admin", "manager"] },
+  { id: "inventory", label: "Inventory", icon: <Package className="w-5 h-5" />, roles: ["admin", "manager", "cashier"] },
   { id: "analytics", label: "Analytics", icon: <BarChart3 className="w-5 h-5" />, roles: ["admin", "manager"] },
-  { id: "customers", label: "Customers", icon: <Users className="w-5 h-5" />, roles: ["admin", "manager", "cashier"] },
+  { id: "customers", label: "Customers", icon: <Users className="w-5 h-5" />, roles: ["admin", "manager"] },
 ];
 
 interface LayoutProps {
