@@ -374,7 +374,7 @@ export function CheckoutPage() {
               cursor: cart.length > 0 ? "pointer" : "not-allowed",
             }}
           >
-            <CreditCard className="w-5 h-5" />
+            <CreditCard className="w-6 h-5" />
             Pay ${total.toFixed(2)}
           </button>
         </div>
