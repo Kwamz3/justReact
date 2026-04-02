@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { initialProducts, Product, CartItem } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
-import { CATEGORIES, Customer } from "../data/mockData";
+import { CATEGORIES, Customer, initialCustomers } from "../data/mockData";
 import { usePaystackPayment } from "react-paystack";
 
 type PaymentMethod = "cash" | "mobile_money" | "card";
@@ -27,6 +27,7 @@ export function CheckoutPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [transactionDone, setTransactionDone] = useState(false);
   const [voidConfirm, setVoidConfirm] = useState<string | null>(null);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
   const barcodeRef = useRef<HTMLInputElement>(null);
 
   const filteredProducts = products.filter((p) => {
@@ -92,12 +93,14 @@ export function CheckoutPage() {
   const cashGivenNum = parseFloat(cashGiven) || 0;
   const change = cashGivenNum - total;
 
+  const selectedCustomer = initialCustomers.find(c => c.id === selectedCustomerId);
+
   const config = {
     reference: (new Date()).getTime().toString(),
-    email: "customer@example.com",
+    email: selectedCustomer ? selectedCustomer.email : "customer@example.com",
     amount: Math.round(total * 100), // Paystack expects amount in lowest denomination (e.g. kobo)
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "", 
-    phone: phoneNumber,
+    phone: phoneNumber || (selectedCustomer ? selectedCustomer.phone : ""),
     currency: "GHS",
   };
 
@@ -131,6 +134,7 @@ export function CheckoutPage() {
     setCashGiven("");
     setPhoneNumber("");
     setPayMethod("cash");
+    setSelectedCustomerId("");
   };
 
   const displayCats = CATEGORIES.filter(c => c !== "Household");
@@ -237,11 +241,22 @@ export function CheckoutPage() {
           </span>
         </div>
 
-        {/* Cashier info */}
-        <div className="px-4 py-2 flex-shrink-0" style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
+        {/* Cashier & Customer info */}
+        <div className="px-4 py-3 flex-shrink-0 flex flex-col gap-2" style={{ background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
           <p style={{ fontSize: "0.75rem", color: "#64748b" }}>
             Cashier: <strong style={{ color: "#1e293b" }}>{user?.name}</strong> &bull; {new Date().toLocaleTimeString()}
           </p>
+          <select
+            value={selectedCustomerId}
+            onChange={(e) => setSelectedCustomerId(e.target.value)}
+            className="w-full bg-white outline-none text-sm rounded-lg px-2 py-1.5 focus:ring-2 focus:ring-blue-500 transition-all"
+            style={{ color: "#1e293b", border: "1px solid #e2e8f0" }}
+          >
+            <option value="">Walk-in Customer (Default)</option>
+            {initialCustomers.map((c) => (
+              <option key={c.id} value={c.id}>{c.name} - {c.phone}</option>
+            ))}
+          </select>
         </div>
 
         {/* Cart items */}
