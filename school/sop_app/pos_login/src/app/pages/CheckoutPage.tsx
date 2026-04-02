@@ -25,6 +25,7 @@ export function CheckoutPage() {
   const [payMethod, setPayMethod] = useState<PaymentMethod>("cash");
   const [cashGiven, setCashGiven] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailInput, setEmailInput] = useState("");
   const [transactionDone, setTransactionDone] = useState(false);
   const [voidConfirm, setVoidConfirm] = useState<string | null>(null);
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
@@ -94,13 +95,16 @@ export function CheckoutPage() {
   const change = cashGivenNum - total;
 
   const selectedCustomer = initialCustomers.find(c => c.id === selectedCustomerId);
+  
+  const activeEmail = emailInput || (selectedCustomer ? selectedCustomer.email : "customer@example.com");
+  const activePhone = phoneNumber || (selectedCustomer ? selectedCustomer.phone : "");
 
   const config = {
     reference: (new Date()).getTime().toString(),
-    email: selectedCustomer ? selectedCustomer.email : "customer@example.com",
+    email: activeEmail,
     amount: Math.round(total * 100), // Paystack expects amount in lowest denomination (e.g. kobo)
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "", 
-    phone: phoneNumber || (selectedCustomer ? selectedCustomer.phone : ""),
+    phone: activePhone,
     currency: "GHS",
   };
 
@@ -133,6 +137,7 @@ export function CheckoutPage() {
     setShowPayModal(false);
     setCashGiven("");
     setPhoneNumber("");
+    setEmailInput("");
     setPayMethod("cash");
     setSelectedCustomerId("");
   };
@@ -518,10 +523,27 @@ export function CheckoutPage() {
                     />
                   </div>
                 )}
+                {payMethod === "card" && !selectedCustomerId && (
+                  <div className="mb-4">
+                    <label style={{ color: "#64748b", fontSize: "0.85rem", display: "block", marginBottom: "0.4rem" }}>Email Address (for receipt)</label>
+                    <input
+                      type="email"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      placeholder="e.g. walkin@example.com"
+                      className="w-full rounded-xl px-4 py-3 outline-none"
+                      style={{ background: "#f8fafc", border: "1px solid #e2e8f0", color: "#1e293b" }}
+                    />
+                  </div>
+                )}
 
                 <button
                   onClick={handlePay}
-                  disabled={(payMethod === "cash" && cashGivenNum < total && cashGiven !== "") || (payMethod === "mobile_money" && phoneNumber.length < 9)}
+                  disabled={
+                    (payMethod === "cash" && cashGivenNum < total && cashGiven !== "") ||
+                    (payMethod === "mobile_money" && activePhone.length < 9) ||
+                    (payMethod === "card" && !selectedCustomerId && emailInput.length > 0 && !emailInput.includes("@"))
+                  }
                   className="w-full py-3.5 rounded-xl flex items-center justify-center gap-2"
                   style={{
                     background: "linear-gradient(135deg, #10b981, #059669)",
